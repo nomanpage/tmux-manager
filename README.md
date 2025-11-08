@@ -4,11 +4,16 @@ I made this little manager because typing full tmux commands was too much of a h
 
 You can name the manager whatever you like. It’s called "lt" (launch tmux) but that’s just what I’ve used personally. You could just as well change it to whatever you prefer.
 
-With "lt" you can:
+With the script named "lt" you can do the following:
 
-- Quickly attach or create a session
-- List sessions
-- Rename or remove sessions
-- Nuke everything (safely unless you’re feeling reckless)
+
+lt <session>              attach or create
+lt rm <session>           remove session
+lt mv <old> <new>         rename session
+lt ls                     list sessions
+lt nuke                   remove all sessions
+
+More commands are planned to be added in the future. 
+
 
 I’m just confused why tmux is so funky in the first place. Like why not do this from the start?
