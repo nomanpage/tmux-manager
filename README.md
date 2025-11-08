@@ -1,4 +1,4 @@
-tmux-manager - unixify tmux as it should be. 
+# tmux-manager - unixify tmux as it should be. 
 
 I made this little manager because typing full tmux commands was too much of a hassle and honestly felt stupid. At work I spend hours in the Unix terminal creating and switching sessions between projects and I needed tmux to work more like normal Unix commands. This started out as a tool just for me but I ended up using it way more than I expected— basically every hour for a whole year.
 
