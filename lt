@@ -1,0 +1,108 @@
+#!/usr/bin/env bash
+
+cmd=$1
+arg1=$2
+arg2=$3
+
+# Safe = user being prompted before nuke. Change to unsafe to bypass this. 
+mode="safe"
+
+usage() {
+	printf "\n"
+  printf "%-25s %s\n" "$0 <session>" "attach or create"
+  printf "%-25s %s\n" "$0 rm <session>" "remove session"
+  printf "%-25s %s\n" "$0 mv <old> <new>" "rename session"
+  printf "%-25s %s\n" "$0 ls" "list sessions"
+  printf "%-25s %s\n" "$0 nuke" "remove all sessions"
+	printf "\n"
+  exit 1
+}
+
+tmux_find_session() {
+	local name=$1
+	tmux has-session -t "$name" 2>/dev/null
+}
+
+present_argument() {
+	[[ -n "$1" ]]; 
+}
+
+if ! present_argument $cmd; then
+	usage
+fi
+
+case $cmd in 
+	ls)
+	if ! tmux list-sessions >/dev/null 2>&1; then
+		echo "No current tmux sessions exist"
+		exit 1
+	fi
+
+	tmux list-sessions
+	exit 0
+	;;
+
+	rm)
+	if ! tmux_find_session $arg1; then
+		echo "tmux session: $arg1 does not exits"
+		exit 1
+	fi
+
+	if ! tmux kill-session -t "$arg1"; then 
+		echo "Failed to terminate tmux session $arg1"
+		exit 1
+	fi 
+
+	echo "tmux session $arg1 terminated successfully"
+	exit 0
+	;; 
+
+	mv) 
+	if ! tmux_find_session $arg1; then
+		echo "tmux session: $arg1 does not exits"
+		exit 1
+	fi
+
+	if ! present_argument $arg2; then
+		echo "Usage: $0 mv <name> <new_name>"
+		exit 1
+	fi
+
+	if ! tmux rename-session -t "$arg1" "$arg2"; then
+		echo "Failed to rename tmux session $1 to $2"
+		exit 1
+	fi 
+
+	echo "tmux session $arg1 sucessfully renamed to  $arg2..."
+	exit 0
+	;;
+
+	nuke)
+	if [[ "$mode" == "safe" ]]; then
+		read -p "This will remove all tmux sessions... Are you sure(y/n)? "
+		echo 
+		if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+			[[ "$0" = "$BASH_SOURCE" ]] && exit 1 || return 1 
+		fi
+	fi
+
+	echo "Terminating all tmux sessions but the current..."
+	tmux kill-session -a
+	exit 0
+	;;
+
+	*)
+	session="$cmd"
+
+	if tmux_find_session $session; then
+		echo "Attaching to existing tmux session $session..."
+		tmux attach-session -t "$session"
+	else 
+		echo "Creating new tmux session $session..."
+		tmux new-session -s "$session"
+	fi
+
+	exit 0
+	;;
+
+esac
