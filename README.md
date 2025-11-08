@@ -6,12 +6,14 @@ You can name the manager whatever you like. It’s called "lt" (launch tmux) but
 
 With the script named "lt" you can do the following:
 
-
+```console
 lt <session>              attach or create
 lt rm <session>           remove session
 lt mv <old> <new>         rename session
 lt ls                     list sessions
 lt nuke                   remove all sessions
+```
+
 
 More commands are planned to be added in the future. 
 
