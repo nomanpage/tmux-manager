@@ -6,9 +6,9 @@ You can name the manager whatever you like. It’s called "lt" (launch tmux) but
 
 With "lt" you can:
 
-Quickly attach or create a session
-List sessions
-Rename or remove sessions
-Nuke everything (safely unless you’re feeling reckless)
+- Quickly attach or create a session
+- List sessions
+- Rename or remove sessions
+- Nuke everything (safely unless you’re feeling reckless)
 
 I’m just confused why tmux is so funky in the first place. Like why not do this from the start?
