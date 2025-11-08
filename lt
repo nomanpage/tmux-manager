@@ -4,8 +4,7 @@ cmd=$1
 arg1=$2
 arg2=$3
 
-# Safe = user being prompted before nuke. Change to unsafe to bypass this. 
-mode="safe"
+readonly MODE="safe"
 
 usage() {
 	printf "\n"
@@ -19,22 +18,20 @@ usage() {
 }
 
 tmux_find_session() {
-	local name=$1
+	local name="$1"
 	tmux has-session -t "$name" 2>/dev/null
 }
 
-present_argument() {
-	[[ -n "$1" ]]; 
-}
+has_argument() { [[ -n "$1" ]]; }
 
-if ! present_argument $cmd; then
+if ! has_argument $cmd; then
 	usage
 fi
 
 case $cmd in 
 	ls)
 	if ! tmux list-sessions >/dev/null 2>&1; then
-		echo "No current tmux sessions exist"
+		echo "No tmux sessions currently exist"
 		exit 1
 	fi
 
@@ -43,8 +40,8 @@ case $cmd in
 	;;
 
 	rm)
-	if ! tmux_find_session $arg1; then
-		echo "tmux session: $arg1 does not exits"
+	if ! tmux_find_session "$arg1"; then
+		echo "tmux session: $arg1 does not exist"
 		exit 1
 	fi
 
@@ -58,18 +55,18 @@ case $cmd in
 	;; 
 
 	mv) 
-	if ! tmux_find_session $arg1; then
-		echo "tmux session: $arg1 does not exits"
+	if ! tmux_find_session "$arg1"; then
+		echo "tmux session: $arg1 does not exist"
 		exit 1
 	fi
 
-	if ! present_argument $arg2; then
+	if ! has_argument "$arg2"; then
 		echo "Usage: $0 mv <name> <new_name>"
 		exit 1
 	fi
 
 	if ! tmux rename-session -t "$arg1" "$arg2"; then
-		echo "Failed to rename tmux session $1 to $2"
+		echo "Failed to rename tmux session $arg1 to $arg2"
 		exit 1
 	fi 
 
@@ -78,22 +75,21 @@ case $cmd in
 	;;
 
 	nuke)
-	if [[ "$mode" == "safe" ]]; then
+	if [[ "$MODE" == "safe" ]]; then
 		read -p "This will remove all tmux sessions... Are you sure(y/n)? "
 		echo 
 		if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-			[[ "$0" = "$BASH_SOURCE" ]] && exit 1 || return 1 
+			[[ "$0" = "$BASH_SOURCE" ]] && echo "Nuke aborted..." && exit 1 || return 1 
 		fi
 	fi
 
-	echo "Terminating all tmux sessions but the current..."
+	echo "Terminating all tmux sessions..."
 	tmux kill-session -a
 	exit 0
 	;;
 
 	*)
 	session="$cmd"
-
 	if tmux_find_session $session; then
 		echo "Attaching to existing tmux session $session..."
 		tmux attach-session -t "$session"
@@ -104,5 +100,4 @@ case $cmd in
 
 	exit 0
 	;;
-
 esac
