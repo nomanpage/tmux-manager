@@ -17,5 +17,10 @@ lt nuke                   remove all sessions
 
 More commands are planned to be added in the future. 
 
+### How to use
+- Clone this repo or just copy the raw file from Github and paste it into a file of your own on your machine. 
+- Make the file executable.
+- Put it in your path. 
 
+### Final comments
 I’m just confused why tmux is so funky in the first place. Like why not do this from the start?
