@@ -90,7 +90,7 @@ case $cmd in
 
 	*)
 	session="$cmd"
-	if tmux_find_session $session; then
+	if tmux_find_session "$session"; then
 		echo "Attaching to existing tmux session $session..."
 		tmux attach-session -t "$session"
 	else 
