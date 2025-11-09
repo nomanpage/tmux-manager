@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+me=$(basename "$0")
 cmd=$1
 arg1=$2
 arg2=$3
@@ -8,11 +9,11 @@ readonly MODE="safe"
 
 usage() {
 	printf "\n"
-  printf "%-25s %s\n" "$0 <session>" "attach or create"
-  printf "%-25s %s\n" "$0 rm <session>" "remove session"
-  printf "%-25s %s\n" "$0 mv <old> <new>" "rename session"
-  printf "%-25s %s\n" "$0 ls" "list sessions"
-  printf "%-25s %s\n" "$0 nuke" "remove all sessions"
+  printf "%-25s %s\n" "$me <session>" "attach or create"
+  printf "%-25s %s\n" "$me rm <session>" "remove session"
+  printf "%-25s %s\n" "$me mv <old> <new>" "rename session"
+  printf "%-25s %s\n" "$me ls" "list sessions"
+  printf "%-25s %s\n" "$me nuke" "remove all sessions"
 	printf "\n"
   exit 1
 }
@@ -61,7 +62,7 @@ case $cmd in
 	fi
 
 	if ! has_argument "$arg2"; then
-		echo "Usage: $0 mv <name> <new_name>"
+		echo "Usage: $me mv <name> <new_name>"
 		exit 1
 	fi
 
