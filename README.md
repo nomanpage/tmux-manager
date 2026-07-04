@@ -2,7 +2,7 @@
 
 I made this little manager because typing full tmux commands was too much of a hassle. 
 
-You can name the manager whatever you like. It’s called "lt" (launch tmux) here but that’s just what I’ve used personally.
+You can name the manager "lt" whatever you'd like. 
 
 With the script named "lt" you can do the following:
 
